@@ -1,4 +1,4 @@
-package beakjoon.n11720;
+package baekjoon.n11720;
 
 import java.util.Scanner;
 public class Main {
@@ -13,5 +13,6 @@ public class Main {
         }
 
         System.out.println(total);
+        s.close();
     }
 }
