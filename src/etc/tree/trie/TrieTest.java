@@ -7,10 +7,13 @@ public class TrieTest {
         trie.insert("frodo");
         trie.insert("front");
         trie.insert("frozen");
-        trie.insert("frodo");
+        trie.insert("frodon");
         trie.insert("kakao");
 
         System.out.println(trie.contains("frodo"));
+        System.out.println(trie.contains("fro??"));
+        System.out.println(trie.contains("froz??"));
+
 
     }
 }
