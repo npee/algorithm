@@ -2,13 +2,20 @@ package etc.tree.trie;
 
 public class Trie {
     private TrieNode rootNode;
+    private TrieNode rootNodeReverse;
 
     Trie() {
         rootNode = new TrieNode();
+        rootNodeReverse = new TrieNode();
         print("생성 시(생성자 호출 시) 빈 TrieNode 생성하여 root로 사용");
     }
 
     void insert(String word) {
+        commonInsert(word);
+        reverseInsert(word);
+    }
+
+    void commonInsert(String word) {
         TrieNode thisNode = this.rootNode;
         print("rootNode로 연산 시작(빈 노드)");
         int depth = 0;
@@ -27,25 +34,24 @@ public class Trie {
                 print("찾는 노드가 없으면(Key가 null이면) [" + c + "]을 Key로 하는 새 노드 생성");
                 return new TrieNode();
             });
-            thisNode.setDepth(++depth);
+            thisNode.increaseCount();
         }
 
         thisNode.setIsLastChar(true);
         print("마지막 문자? " + thisNode.isLastChar() + " ======== insert() finished");
         print("");
+        System.out.println(depth);
     }
 
-    void insertReverse(String word) {
-        TrieNode thisNode = this.rootNode;
-        print("rootNode로 연산 시작(빈 노드)");
+    void reverseInsert(String word) {
+        TrieNode thisNode = this.rootNodeReverse;
         int depth = 0;
 
-        print("삽입할 단어(" + word + ")의 길이(" + word.length() + ")만큼 반복 시작");
-        for (int i = 0; i < word.length(); i++) {
+        for (int i = word.length() - 1; i >= 0; i--) {
             thisNode = thisNode.getChildNodes().computeIfAbsent(word.charAt(i), c -> new TrieNode());
-            thisNode.setDepth(++depth);
+            thisNode.increaseCount();
         }
-        // thisNode.setIsLastChar(true);
+        System.out.println(depth);
     }
 
     boolean contains(String word) {
@@ -58,15 +64,48 @@ public class Trie {
 
             if (node == null) {
                 return false;
-            } else {
-
-                // System.out.print(node.getDepth() + " ");
             }
-
             thisNode = node;
         }
-        // System.out.println();
         return thisNode.isLastChar();
+    }
+
+    int getCount(String query) {
+        if (query.charAt(0) == '?') {
+            return getCountReverseCase(query);
+        } else {
+            return getCountCommonCase(query);
+        }
+    }
+
+    int getCountCommonCase(String query) {
+        TrieNode currentNode = this.rootNode;
+        for (int i = 0; i < query.length(); i++) {
+            char ch = query.charAt(i);
+            if (ch == '?') {
+                break;
+            }
+            if (!currentNode.getChildNodes().containsKey(ch)) {
+                return 0;
+            }
+            currentNode = currentNode.getChildNodes().get(ch);
+        }
+        return currentNode.getCount();
+    }
+
+    int getCountReverseCase(String query) {
+        TrieNode currentNode = this.rootNodeReverse;
+        for (int i = query.length() - 1; i >= 0; i--) {
+            char ch = query.charAt(i);
+            if (ch == '?') {
+                break;
+            }
+            if (!currentNode.getChildNodes().containsKey(ch)) {
+                return 0;
+            }
+            currentNode = currentNode.getChildNodes().get(ch);
+        }
+        return currentNode.getCount();
     }
 
     void delete(String word) {

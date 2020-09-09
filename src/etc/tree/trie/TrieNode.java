@@ -6,7 +6,7 @@ import java.util.Map;
 public class TrieNode {
     private Map<Character, TrieNode> childNodes = new HashMap<>();
     private boolean isLastChar;
-    private int depth = 0;
+    private int count = 0;
 
     Map<Character, TrieNode> getChildNodes() {
         return this.childNodes;
@@ -20,12 +20,12 @@ public class TrieNode {
         this.isLastChar = isLastChar;
     }
 
-    int getDepth() {
-        return this.depth;
+    void increaseCount() {
+        this.count++;
     }
 
-    void setDepth(int depth) {
-        this.depth = depth;
+    int getCount() {
+        return this.count;
     }
 
     @Override
