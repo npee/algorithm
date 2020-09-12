@@ -1,5 +1,8 @@
 package programmers.ex.hash;
 
+import java.util.Hashtable;
+import java.util.Map;
+
 public class Solution {
     public static void main(String[] args) {
         String[] participant1 = {"leo", "kiki", "eden"};
@@ -20,6 +23,29 @@ public class Solution {
     public static String solution(String[] participant, String[] completion) {
         String answer = "";
 
+        Map<String, Integer> hashtable = new Hashtable<>();
+
+        for (String person: participant) {
+            if (0 < hashtable.getOrDefault(person, 0)) {
+                hashtable.replace(person, hashtable.get(person) + 1);
+            } else {
+                hashtable.put(person, 1);
+            }
+        }
+
+        for (String person: completion) {
+            if (hashtable.get(person) > 0) {
+                hashtable.replace(person, hashtable.get(person) - 1);
+            }
+        }
+
+        for (Map.Entry<String, Integer> entry : hashtable.entrySet()) {
+            if (entry.getValue() == 1) {
+                answer = entry.getKey();
+            }
+        }
+
+        /*
         String[] temp = new String[participant.length];
 
         for (int i = 0; i < participant.length; i++) {
@@ -41,6 +67,7 @@ public class Solution {
             }
         }
 
+         */
         return answer;
     }
 
