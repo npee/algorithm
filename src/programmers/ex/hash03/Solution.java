@@ -23,8 +23,6 @@ public class Solution {
             }
         }
 
-        System.out.println(base.entrySet().toString());
-
         for (Map.Entry<String, Integer> entry: base.entrySet()) {
             answer *= (entry.getValue() + 1);
         }
